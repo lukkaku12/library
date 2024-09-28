@@ -1,12 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { BookService } from './book.service';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
+import { ApiKeyGuard } from '../api-key/api-key.guard';
 
 @Controller('book')
 export class BookController {
   constructor(private readonly bookService: BookService) {}
 
+  @UseGuards(ApiKeyGuard)
   @Post()
   create(@Body() createBookDto: CreateBookDto) {
     return this.bookService.create(createBookDto);
@@ -18,7 +20,7 @@ export class BookController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: number) {
     return this.bookService.findOne(+id);
   }
 
@@ -28,7 +30,7 @@ export class BookController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id') id: number) {
     return this.bookService.remove(+id);
   }
 }
