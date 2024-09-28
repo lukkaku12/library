@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@n
 import { BookService } from './book.service';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
-import { ApiKeyGuard } from 'src/api-key/api-key.guard';
+import { ApiKeyGuard } from '../api-key/api-key.guard';
 
 @Controller('book')
 export class BookController {
