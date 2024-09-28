@@ -12,15 +12,16 @@ export class BookService {
   }
   async create(createBookDto: CreateBookDto): Promise<Book> {
     try {
-      if (createBookDto.author || createBookDto.name || createBookDto.genre || createBookDto.publicationYear) {
-        throw new HttpException('INVALID BOOK DATA:', HttpStatus.BAD_REQUEST)
+      console.log(createBookDto)
+      if (!createBookDto.author || !createBookDto.name || !createBookDto.genre || !createBookDto.publicationYear) {
+        throw new HttpException('INVALID BOOK DATA', HttpStatus.BAD_REQUEST)
       }
       // al hacer un DTO para verificar los datos que entran no usamos .create 
       const response = await this.bookRepository.save(createBookDto);
       return response;
       
     } catch (error) {
-      throw new HttpException('ERROR CREATING A BOOK REGISTRY:' + error, HttpStatus.BAD_REQUEST)
+      throw new HttpException('ERROR CREATING A BOOK REGISTRY: ' + error, HttpStatus.BAD_REQUEST)
       
     }
   }
@@ -38,7 +39,7 @@ export class BookService {
     try {
       const response = await this.bookRepository.findOne({where:{id}});
       if (!response) throw new HttpException('BOOK NOT FOUND', HttpStatus.BAD_REQUEST)
-      
+      return response
     } catch (error) {
       throw new HttpException('ERROR FINDING THE BOOK REQUESTED', HttpStatus.BAD_REQUEST)
     }
@@ -46,7 +47,7 @@ export class BookService {
 
   async update(id: number, updateBookDto: Partial<UpdateBookDto>) {
     try {
-      if (updateBookDto.author || updateBookDto.name || updateBookDto.genre || updateBookDto.publicationYear) {
+      if (!updateBookDto.author || !updateBookDto.name || !updateBookDto.genre || !updateBookDto.publicationYear) {
         throw new HttpException('INVALID BOOK DATA:', HttpStatus.BAD_REQUEST)
       }
 
@@ -58,7 +59,6 @@ export class BookService {
       throw new HttpException('ERROR UPDATING BOOK DATA:', HttpStatus.BAD_REQUEST)
       
     }
-
 
   }
 
