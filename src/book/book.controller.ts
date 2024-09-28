@@ -18,7 +18,7 @@ export class BookController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: number) {
     return this.bookService.findOne(+id);
   }
 
@@ -28,7 +28,7 @@ export class BookController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id') id: number) {
     return this.bookService.remove(+id);
   }
 }

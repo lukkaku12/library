@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -15,7 +15,7 @@ export class BookService {
       if (createBookDto.author || createBookDto.name || createBookDto.genre || createBookDto.publicationYear) {
         throw new HttpException('INVALID BOOK DATA:', HttpStatus.BAD_REQUEST)
       }
-
+      // al hacer un DTO para verificar los datos que entran no usamos .create 
       const response = await this.bookRepository.save(createBookDto);
       return response;
       
@@ -26,7 +26,12 @@ export class BookService {
   }
 
   async findAll(): Promise<Book[]> {
-    return await this.bookRepository.find();
+    try {
+      return await this.bookRepository.find();
+      
+    } catch (error) {
+      throw new InternalServerErrorException(error)
+    }
   }
 
   async findOne(id: number) {
